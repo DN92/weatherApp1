@@ -1,8 +1,3 @@
-/*
-http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
-*/
-
-
 import statesDictionary from '../statesDictionary'
 import { Dispatch, SetStateAction } from 'react'
 import { openWeatherApiByCity, openWeatherApiByZip, geoCodeOptions } from '../@types'
@@ -43,7 +38,7 @@ export async function getGeoCodeByCity(
     )
     if (response.status >= 200 && response.status <= 299) {
       const data: Array<openWeatherApiByCity> = await response.json()
-      console.log('data', data)
+      // console.log('data', data)
       const resultArr = data.filter(ele => ele.state?.toLowerCase() === state)
 
       if (resultArr.length > 0) {
@@ -53,10 +48,6 @@ export async function getGeoCodeByCity(
       }
     }
   }
-
-  /*
-  http://api.openweathermap.org/geo/1.0/zip?zip={zip code},{country code}&appid={API key}
-  */
 
   export async function getGeoCodeByZip(zipCode: string,
     successSetter: Dispatch<SetStateAction<openWeatherApiByZip>>,
@@ -69,9 +60,15 @@ export async function getGeoCodeByCity(
     const path = 'http://api.openweathermap.org/geo/'
     const version = '1.0'
     const key = openWeatherKey
+
+    if(!key) {
+      throw Error('no api key')
+    }
+
     const response = await fetch(
-      path+version+'/zip?'+zipCode+'&appid='+key
+      path+version+'/zip?zip='+zipCode+'&appid='+key
     )
+
     if (response.status >= 200 && response.status <= 299) {
       const data: openWeatherApiByZip = await response.json()
       if(data) {

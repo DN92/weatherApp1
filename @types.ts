@@ -15,8 +15,11 @@ export interface openWeatherApiByZip {
   country: string
 }
 
+export type openWeatherApiLocation = openWeatherApiByCity | openWeatherApiByZip
+
 export interface geoCodeOptions {
   key?: string | undefined,
   version?: string,
   limit?: string,
 }
+
